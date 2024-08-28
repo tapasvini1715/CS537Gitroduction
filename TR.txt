@@ -1,1 +1,7 @@
 CS537 TR is going to be epic.
+
+We'll explore a ton of web dev concepts and technologies.
+Here's a list:
+- HTML
+- CSS
+- JS
