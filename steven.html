@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Steven LaGoy</title>
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--ink:#e5e7eb;--muted:#94a3b8;--accent:#22d3ee;--glow:0 0 40px rgba(34,211,238,.35)}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      color:var(--ink);
+      background:radial-gradient(1200px 600px at 10% -10%, #1f2937, transparent 60%),
+                 radial-gradient(800px 400px at 110% 10%, #0ea5e9, transparent 35%),
+                 radial-gradient(900px 600px at -10% 110%, #22d3ee22, transparent 50%),
+                 var(--bg);
+      display:grid; place-items:center; padding:24px;
+    }
+    .card{
+      width:min(760px, 92vw); background:linear-gradient(180deg,#0b1220,#0b1220f2 60%), var(--card);
+      border:1px solid #1f2937; border-radius:24px; padding:28px 28px 32px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    h1{margin:0 0 4px; font-size:clamp(28px,4vw,40px); letter-spacing:.4px}
+    .sub{color:var(--muted); margin:0 0 18px}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      background:rgba(34,211,238,.08); border:1px solid rgba(34,211,238,.35); color:#a5f3fc;
+      font-weight:600; font-size:13px; letter-spacing:.3px; text-transform:uppercase;
+    }
+    .fact{font-size:clamp(16px,2.4vw,18px); background:#0b1324; border:1px dashed #1f3451;
+      border-radius:14px; padding:14px 16px; margin:16px 0 18px; min-height:58px}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    button{
+      cursor:pointer; border:1px solid #334155; background:#111826; color:var(--ink);
+      padding:10px 14px; border-radius:12px; font-weight:600; transition:.2s transform,.2s box-shadow;
+    }
+    button:hover{transform:translateY(-1px); box-shadow:var(--glow)}
+    .sparkle{display:inline-block; filter:drop-shadow(0 0 8px rgba(34,211,238,.7)); animation:float 3.5s ease-in-out infinite}
+    @keyframes float { 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-6px)} }
+    footer{margin-top:18px; color:var(--muted); font-size:13px}
+    code{background:#0b1324; padding:.15em .35em; border-radius:8px; border:1px solid #1f3451}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="badge" aria-hidden="true">
+      <span class="sparkle">✨</span> Hello there
+    </div>
+    <h1>Steven LaGoy</h1>
+    <p class="sub">I made this page with AI.</p>
+
+    <div id="fact" class="fact" aria-live="polite">
+      There are <strong>10</strong> types of people: those who understand binary, and those who don\'t.
+    </div>
+
+    <div class="row">
+      <button id="newBtn" type="button" title="Show another one">Show me another</button>
+      <button id="copyBtn" type="button" title="Copy to clipboard">Copy to clipboard</button>
+    </div>
+
+    <footer>
+      Pro tip: press <code>F</code> for a fun fact, or <code>J</code> for a nerdy joke.
+    </footer>
+  </main>
+
+  <script>
+    const items = [
+      // jokes
+      "There are <strong>10</strong> types of people: those who understand binary, and those who don't.",
+      "I told my computer I needed a break—now it won't stop showing me the lock screen.",
+      "Debugging: being the detective in a crime movie where you are also the murderer.",
+      // interesting facts
+      "Honey never spoils. Archaeologists have eaten 3,000-year-old honey and it was still good.",
+      "Bananas are berries, but strawberries aren't.",
+      "Octopuses have three hearts and blue blood—metal!",
+      "The Eiffel Tower can be ~15 cm taller during hot days due to thermal expansion.",
+      "Chess had more possible games than atoms in the observable universe (estimated).",
+      "A day on Venus is longer than its year.",
+    ];
+
+    const factBox = document.getElementById('fact');
+    const newBtn = document.getElementById('newBtn');
+    const copyBtn = document.getElementById('copyBtn');
+
+    function pick() {
+      const html = items[Math.floor(Math.random() * items.length)];
+      factBox.innerHTML = html;
+    }
+
+    newBtn.addEventListener('click', pick);
+
+    copyBtn.addEventListener('click', async () => {
+      const temp = factBox.textContent.trim();
+      try {
+        await navigator.clipboard.writeText(temp);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy to clipboard', 900);
+      } catch(err) {
+        copyBtn.textContent = 'Select & Ctrl+C';
+        setTimeout(() => copyBtn.textContent = 'Copy to clipboard', 1200);
+      }
+    });
+
+    // hotkeys: F for fact, J for joke/random
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'f' || e.key.toLowerCase() === 'j') pick();
+    });
+  </script>
+</body>
+</html>
